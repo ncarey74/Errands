@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 using namespace food;
 
@@ -56,7 +57,9 @@ void GroceryList::read() const
     }
 }
 
-void GroceryList::crossItemOffList(std::string s)
+void GroceryList::crossItemOffList(const std::string& s)
 {
-    // find item based on its name, then delete
+    std::cout << "I don't need this on my list anymore: " << s << std::endl;
+    auto findItem = [&s](const GroceryItemPointer& g) { return g->name() == s; };
+    mList.erase(std::remove_if(mList.begin(), mList.end(), findItem));
 }

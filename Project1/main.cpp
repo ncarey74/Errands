@@ -20,6 +20,8 @@ int main()
     {
         food::GroceryList g{};
         g.read();
+        g.crossItemOffList("apple");
+        g.read();
     }
     catch (const NoList& e)
     {
