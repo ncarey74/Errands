@@ -16,3 +16,8 @@ std::string Pear::name() const
 {
     return mName;
 }
+
+std::string Banana::name() const
+{
+    return mName;
+}

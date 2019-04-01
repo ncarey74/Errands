@@ -10,6 +10,7 @@ public:
     virtual std::string name() const = 0;
 };
 
+
 class Apple : public Fruit
 {
 public:
@@ -23,6 +24,7 @@ public:
 private:
     std::string mName = "apple";
 };
+
 
 class Peach : public virtual Fruit
 {
@@ -51,5 +53,20 @@ public:
     std::string name() const;
 private:
     std::string mName = "pear";
+};
+
+
+class Banana : public virtual Fruit
+{
+public:
+    Banana() = default;
+    ~Banana() = default;
+    Banana(const Banana&) = default;
+    Banana& operator=(const Banana&) = default;
+    // Banana(const Banana&&) = default;  <-- VS2013 bug prevents move constructors from being explictly defined as default
+    // Banana& operator=(Banana Pear&&) = default;  <-- VS2013 bug
+    std::string name() const;
+private:
+    std::string mName = "banana";
 };
 }
