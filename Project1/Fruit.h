@@ -10,11 +10,6 @@ public:
     virtual std::string name() const = 0;
 };
 
-//bool operator==(const Fruit& lhs, const Fruit& rhs)
-//{
-//    return lhs.name() == rhs.name();
-//}
-
 class Apple : public Fruit
 {
 public:
