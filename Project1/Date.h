@@ -36,6 +36,8 @@ private:
     MonthNumber mNumber{MonthNumber::invalid};
     std::string mName = "Invalid month";
     Day mNumberOfDays{0};
+
+    void finalize(const std::string& name, Day numberOfDays);
 };
 
 struct Date

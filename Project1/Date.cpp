@@ -4,57 +4,51 @@
 #include <iostream>
 #include <sstream>
 
+void Month::finalize(const std::string& name, Day numberOfDays)
+{
+    mName = name;
+    mNumberOfDays = numberOfDays;
+}
+
 Month::Month(MonthNumber m) : mNumber(m)
 {
     switch (mNumber)
     {
         case MonthNumber::january:
-            mName = "January";
-            mNumberOfDays = 31;
+            finalize("January", 31);
             break;
         case MonthNumber::february:
-            mName = "February";
-            mNumberOfDays = 28;
+            finalize("February", 28);
             break;
         case MonthNumber::march:
-            mName = "March";
-            mNumberOfDays = 31;
+            finalize("March", 31);
             break;
         case MonthNumber::april:
-            mName = "April";
-            mNumberOfDays = 30;
+            finalize("April", 30);
             break;
         case MonthNumber::may:
-            mName = "May";
-            mNumberOfDays = 31;
+            finalize("May", 31);
             break;
         case MonthNumber::june:
-            mName = "June";
-            mNumberOfDays = 30;
+            finalize("June", 30);
             break;
         case MonthNumber::july:
-            mName = "July";
-            mNumberOfDays = 31;
+            finalize("July", 31);
             break;
         case MonthNumber::august:
-            mName = "August";
-            mNumberOfDays = 31;
+            finalize("August", 31);
             break;
         case MonthNumber::september:
-            mName = "September";
-            mNumberOfDays = 30;
+            finalize("September", 30);
             break;
         case MonthNumber::october:
-            mName = "October";
-            mNumberOfDays = 31;
+            finalize("October", 31);
             break;
         case MonthNumber::november:
-            mName = "November";
-            mNumberOfDays = 30;
+            finalize("November", 30);
             break;
         case MonthNumber::december:
-            mName = "December";
-            mNumberOfDays = 31;
+            finalize("December", 31);
             break;
     }
 }
