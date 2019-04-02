@@ -3,15 +3,25 @@
 
 #include <iostream>
 
-void rageAtLife()
+void holdIt()
 {
-    std::cerr << "Where did I put that list?" << std::endl;
+    char c{};
+    std::cin >> c;
 }
 
-void rageAtTheStore()
+void rageAtLife(const std::exception& e)
 {
+    std::cerr << e.what() << std::endl;
+    std::cerr << "Where did I put that list?" << std::endl;
+    holdIt();
+}
+
+void rageAtTheStore(const std::exception& e)
+{
+    std::cerr << e.what() << std::endl;
     std::cerr << "Why don't they have the things I need!" << std::endl;
     std::cerr << "Manager, this is unacceptable!" << std::endl;
+    holdIt();
 }
 
 int main()
@@ -25,11 +35,11 @@ int main()
     }
     catch (const NoList& e)
     {
-        rageAtLife();
+        rageAtLife(e);
     }
     catch (const InvalidItem& e)
     {
-        rageAtTheStore();
+        rageAtTheStore(e);
     }
 
     //holdIt();

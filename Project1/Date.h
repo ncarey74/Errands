@@ -1,12 +1,14 @@
 #pragma once
 
 #include <string>
+#include <exception>
 
 typedef unsigned char Day;
 typedef unsigned int Year;
 
 enum class MonthNumber : unsigned char
 {
+    invalid     = 0,
     january     = 1,
     february    = 2,
     march       = 3,
@@ -31,16 +33,26 @@ public:
     MonthNumber number() const;
 
 private:
-    MonthNumber mNumber;
-    std::string mName;
-    Day mNumberOfDays;
+    MonthNumber mNumber{MonthNumber::invalid};
+    std::string mName = "Invalid month";
+    Day mNumberOfDays{0};
 };
 
 struct Date
 {
-    Month month;
-    Day day;
-    Year year;
+    Month month{MonthNumber::invalid};
+    Day day{0};
+    Year year{0};
 
     explicit Date(Month m, Day d, Year y);
+};
+
+class InvalidDate : public std::exception
+{
+public:
+    explicit InvalidDate(Month m, Day d);
+    virtual const char* what() const throw();
+
+private:
+    std::string mErrorMessage{};
 };

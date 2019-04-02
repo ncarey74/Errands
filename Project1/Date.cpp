@@ -1,7 +1,10 @@
 #include "Date.h"
-#include "stdexcept"
 
-Month::Month(MonthNumber m) : mNumber(m), mName("delay init"), mNumberOfDays(0)
+#include "stdexcept"
+#include <iostream>
+#include <sstream>
+
+Month::Month(MonthNumber m) : mNumber(m)
 {
     switch (mNumber)
     {
@@ -71,13 +74,22 @@ MonthNumber Month::number() const
     return mNumber;
 }
 
-/**
- * @todo Custom exception for an invalid date.
- */
 Date::Date(Month m, Day d, Year y) : month(m), day(d), year(y)
 {
     if (day > month.numberOfDays())
     {
-        throw std::logic_error{"Too many days for the month."};
+        throw InvalidDate{month, day};
     }
+}
+
+InvalidDate::InvalidDate(Month m, Day d)
+{
+    std::stringstream ss{};
+    ss << "Invalid Data Exception: " << m.name() << "doesn't have day " << d;
+    mErrorMessage = ss.str();;
+}
+
+const char* InvalidDate::what() const throw()
+{
+    return mErrorMessage.c_str();
 }
