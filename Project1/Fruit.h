@@ -8,6 +8,7 @@ class Fruit : public GroceryItem
 {
 public:
     virtual std::string name() const = 0;
+    virtual Date expirationDate() const = 0;
 };
 
 
@@ -20,9 +21,12 @@ public:
     Apple& operator=(const Apple&) = default;
     // Apple(const Apple&&) = default;  <-- VS2013 bug prevents move constructors from being explictly defined as default
     // Apple& operator=(const Apple&&) = default;  <-- VS2013 bug
+
     std::string name() const;
+    Date expirationDate() const;
 private:
     std::string mName = "apple";
+    Date mExpirationDate{"04-01-2019"};
 };
 
 
@@ -35,9 +39,12 @@ public:
     Peach& operator=(const Peach&) = default;
     // Peach(const Peach&&) = default;  <-- VS2013 bug prevents move constructors from being explictly defined as default
     // Peach& operator=(const Peach&&) = default;  <-- VS2013 bug
+
     std::string name() const;
+    Date expirationDate() const;
 private:
     std::string mName = "peach";
+    Date mExpirationDate{};
 };
 
 
@@ -50,9 +57,12 @@ public:
     Pear& operator=(const Pear&) = default;
     // Pear(const Pear&&) = default;  <-- VS2013 bug prevents move constructors from being explictly defined as default
     // Pear& operator=(const Pear&&) = default;  <-- VS2013 bug
+
     std::string name() const;
+    Date expirationDate() const;
 private:
     std::string mName = "pear";
+    Date mExpirationDate{};
 };
 
 
@@ -65,8 +75,11 @@ public:
     Banana& operator=(const Banana&) = default;
     // Banana(const Banana&&) = default;  <-- VS2013 bug prevents move constructors from being explictly defined as default
     // Banana& operator=(Banana Pear&&) = default;  <-- VS2013 bug
+
     std::string name() const;
+    Date expirationDate() const;
 private:
     std::string mName = "banana";
+    Date mExpirationDate{};
 };
 }

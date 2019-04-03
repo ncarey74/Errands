@@ -2,6 +2,7 @@
 
 #include <string>
 #include <exception>
+#include <iostream>
 
 typedef unsigned char Day;
 typedef unsigned int Year;
@@ -23,10 +24,13 @@ enum class MonthNumber : unsigned char
     december    = 12
 };
 
+std::istream& operator>>(std::istream& input, MonthNumber& output);
+
 class Month
 {
 public:
     explicit Month(MonthNumber m);
+    explicit Month(std::string s);
 
     std::string name() const;
     Day numberOfDays() const;
@@ -47,6 +51,8 @@ struct Date
     Year year{0};
 
     explicit Date(Month m, Day d, Year y);
+    explicit Date(const std::string& s);
+    Date() = default;
 };
 
 class InvalidDate : public std::exception

@@ -1,13 +1,27 @@
 #include "Date.h"
 
-#include "stdexcept"
-#include <iostream>
 #include <sstream>
+#include <vector>
+#include <tuple>
+#include <queue>
 
-void Month::finalize(const std::string& name, Day numberOfDays)
+
+std::istream& operator>>(std::istream& input, MonthNumber& output)
 {
-    mName = name;
-    mNumberOfDays = numberOfDays;
+    unsigned char underlyingValue{};
+    input >> underlyingValue;
+    output = static_cast<MonthNumber>(underlyingValue);
+    return input;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+// Month member function definitions
+//---------------------------------------------------------------------------------------------------------------------
+
+Month::Month(std::string s)
+{
+
 }
 
 Month::Month(MonthNumber m) : mNumber(m)
@@ -53,6 +67,12 @@ Month::Month(MonthNumber m) : mNumber(m)
     }
 }
 
+void Month::finalize(const std::string& name, Day numberOfDays)
+{
+    mName = name;
+    mNumberOfDays = numberOfDays;
+}
+
 std::string Month::name() const
 {
     return mName;
@@ -68,6 +88,11 @@ MonthNumber Month::number() const
     return mNumber;
 }
 
+
+//---------------------------------------------------------------------------------------------------------------------
+// Date member function definitions
+//---------------------------------------------------------------------------------------------------------------------
+
 Date::Date(Month m, Day d, Year y) : month(m), day(d), year(y)
 {
     if (day > month.numberOfDays())
@@ -75,6 +100,43 @@ Date::Date(Month m, Day d, Year y) : month(m), day(d), year(y)
         throw InvalidDate{month, day};
     }
 }
+
+std::queue<std::string> dateElements(const std::string& s)
+{
+    std::stringstream input{ s };
+    std::queue<std::string> tokens{};
+    std::string token{};
+
+    while (getline(input, token, '-'))
+    {
+        tokens.push(token);
+    }
+
+    return tokens;
+}
+
+Date::Date(const std::string& s)
+{
+    std::queue<std::string> tokens{ dateElements(s) };
+
+    std::stringstream monthToken{ tokens.front() };
+    tokens.pop();
+    std::stringstream dayToken{ tokens.front() };
+    tokens.pop();
+    std::stringstream yearToken{ tokens.front() };
+
+    MonthNumber monthNumber{};
+
+    monthToken >> monthNumber;
+    month = Month{ monthNumber };
+    dayToken >> day;
+    yearToken >> year;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+// InvalidDate member function definitions
+//---------------------------------------------------------------------------------------------------------------------
 
 InvalidDate::InvalidDate(Month m, Day d)
 {
