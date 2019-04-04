@@ -26,7 +26,7 @@ public:
     Date expirationDate() const;
 private:
     std::string mName = "apple";
-    Date mExpirationDate{"04-01-2019"};
+    Date mExpirationDate{"06-09-2020"};
 };
 
 

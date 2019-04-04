@@ -1,12 +1,28 @@
+/*
+*   @file   Date.cpp
+*   @author Carey Norslien
+*   @brief
+*/
+
+//---------------------------------------------------------------------------------------------------------------------
+// File includes
+//---------------------------------------------------------------------------------------------------------------------
 #include "Date.h"
 
 #include <sstream>
 #include <vector>
-#include <tuple>
 #include <queue>
 #include <stdexcept>
 
 
+//---------------------------------------------------------------------------------------------------------------------
+// Private helper function definitions
+//---------------------------------------------------------------------------------------------------------------------
+namespace
+{
+/**
+* @brief
+*/
 std::istream& operator>>(std::istream& input, MonthNumber& output)
 {
     ShortestSafeInteger underlyingValue{};
@@ -14,18 +30,14 @@ std::istream& operator>>(std::istream& input, MonthNumber& output)
     output = static_cast<MonthNumber>(underlyingValue);
     return input;
 }
-
-std::ostream& operator<<(std::ostream& output, Month& month)
-{
-    output << month.name();
-    return output;
 }
-
 
 //---------------------------------------------------------------------------------------------------------------------
 // Month member function definitions
 //---------------------------------------------------------------------------------------------------------------------
-
+/**
+* @brief
+*/
 MonthNumber foo(const std::string& s)
 {
     if (s == "january" || "January")
@@ -122,8 +134,6 @@ void Month::finalize(const std::string& name, Day numberOfDays)
 {
     mName = name;
     mNumberOfDays = numberOfDays;
-
-    std::cout << mName << std::endl;
 }
 
 /**
@@ -154,7 +164,6 @@ MonthNumber Month::number() const
 //---------------------------------------------------------------------------------------------------------------------
 // Date member function definitions
 //---------------------------------------------------------------------------------------------------------------------
-
 /**
 * @brief
 */
@@ -162,13 +171,13 @@ Date::Date(Month m, Day d, Year y) : month(m), day(d), year(y)
 {
     if (day > month.numberOfDays())
     {
-        throw InvalidDate{month, day};
+        day = 0;
     }
 }
 
 std::queue<std::string> dateElements(const std::string& s)
 {
-    std::stringstream input{ s };
+    std::istringstream input{ s };
     std::queue<std::string> tokens{};
     std::string token{};
 
@@ -187,12 +196,11 @@ Date::Date(const std::string& s)
 {
     std::queue<std::string> tokens{ dateElements(s) };
 
-    auto one = tokens.front();
-    std::stringstream monthToken{ one };
+    std::istringstream monthToken{ tokens.front() };
     tokens.pop();
-    std::stringstream dayToken{ tokens.front() };
+    std::istringstream dayToken{ tokens.front() };
     tokens.pop();
-    std::stringstream yearToken{ tokens.front() };
+    std::istringstream yearToken{ tokens.front() };
 
     MonthNumber monthNumber{};
 
@@ -201,22 +209,27 @@ Date::Date(const std::string& s)
     dayToken >> day;
     yearToken >> year;
 
-    std::cout << "hey!!! " << month << "/" << day << "/" << year << std::endl;
+    std::cout << *this << std::endl;
 }
 
 
 //---------------------------------------------------------------------------------------------------------------------
-// InvalidDate member function definitions
+// Public helper function definitions
 //---------------------------------------------------------------------------------------------------------------------
-
-InvalidDate::InvalidDate(Month m, Day d)
+/**
+* @brief
+*/
+std::ostream& operator<<(std::ostream& output, Month& month)
 {
-    std::stringstream ss{};
-    ss << "Invalid Data Exception: " << m.name() << "doesn't have day " << d;
-    mErrorMessage = ss.str();;
+    output << month.name();
+    return output;
 }
 
-const char* InvalidDate::what() const throw()
+/**
+* @brief
+*/
+std::ostream& operator<<(std::ostream& output, Date& date)
 {
-    return mErrorMessage.c_str();
+    output << date.month << " " << date.day << ", " << date.year;
+    return output;
 }

@@ -1,14 +1,33 @@
+/*
+*   @file   Date.h
+*   @author Carey Norslien
+*   @brief  
+*/
 #pragma once
 
+
+//---------------------------------------------------------------------------------------------------------------------
+// File includes
+//---------------------------------------------------------------------------------------------------------------------
 #include <string>
-#include <exception>
 #include <iostream>
 
+
+//---------------------------------------------------------------------------------------------------------------------
+// Public type declarations
+//---------------------------------------------------------------------------------------------------------------------
 // `unsigned char` had unexpected behavior when parsing string, so use `unsigned short`
 typedef unsigned short ShortestSafeInteger;
 typedef ShortestSafeInteger Day;
 typedef ShortestSafeInteger Year;
 
+
+//---------------------------------------------------------------------------------------------------------------------
+// Class declarations
+//---------------------------------------------------------------------------------------------------------------------
+/**
+* @brief    The number of the month in the calendar year.
+*/
 enum class MonthNumber : ShortestSafeInteger
 {
     invalid     = 0,
@@ -27,6 +46,12 @@ enum class MonthNumber : ShortestSafeInteger
 };
 
 
+/*
+* @brief    The month in a date.
+* @details  Enforces the validity of months. A month must exist in the calendar year, and a month has the correct
+*           number of days.
+* @warning  Does not enforce leap years. February is always 28 days.
+*/
 class Month
 {
 public:
@@ -47,6 +72,14 @@ private:
 };
 
 
+/*
+* @brief    The date in the format of month-day-year.
+* @details  Allows the date to be any arrangement of month-day-year (year-month-day, etc...). Enforces valid dates;
+*           the specified day is part of the specified month. A default date will have zero'd member data. Invalid
+*           input will produce a default date.
+* @todo     Consider if the design should allow for default dates with zero'd member data. If not, then an invalid date
+*           should throw an exception.
+*/
 struct Date
 {
     Month month{ MonthNumber::invalid };
@@ -59,15 +92,8 @@ struct Date
 };
 
 
-class InvalidDate : public std::exception
-{
-public:
-    explicit InvalidDate(Month m, Day d);
-    virtual const char* what() const throw();
-
-private:
-    std::string mErrorMessage{};
-};
-
-std::istream& operator>>(std::istream& input, MonthNumber& output);
+//---------------------------------------------------------------------------------------------------------------------
+// Public helper function declarations
+//---------------------------------------------------------------------------------------------------------------------
 std::ostream& operator<<(std::ostream& output, Month& month);
+std::ostream& operator<<(std::ostream& output, Date& date);
