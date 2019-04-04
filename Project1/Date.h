@@ -4,10 +4,12 @@
 #include <exception>
 #include <iostream>
 
-typedef unsigned char Day;
-typedef unsigned int Year;
+// `unsigned char` had unexpected behavior when parsing string, so use `unsigned short`
+typedef unsigned short ShortestSafeInteger;
+typedef ShortestSafeInteger Day;
+typedef ShortestSafeInteger Year;
 
-enum class MonthNumber : unsigned char
+enum class MonthNumber : ShortestSafeInteger
 {
     invalid     = 0,
     january     = 1,
@@ -24,36 +26,38 @@ enum class MonthNumber : unsigned char
     december    = 12
 };
 
-std::istream& operator>>(std::istream& input, MonthNumber& output);
 
 class Month
 {
 public:
     explicit Month(MonthNumber m);
-    explicit Month(std::string s);
+    explicit Month(const std::string& s);
 
     std::string name() const;
     Day numberOfDays() const;
     MonthNumber number() const;
 
 private:
-    MonthNumber mNumber{MonthNumber::invalid};
+    MonthNumber mNumber{ MonthNumber::invalid };
     std::string mName = "Invalid month";
-    Day mNumberOfDays{0};
+    Day mNumberOfDays{ 0 };
 
+    void construct(MonthNumber m);
     void finalize(const std::string& name, Day numberOfDays);
 };
 
+
 struct Date
 {
-    Month month{MonthNumber::invalid};
-    Day day{0};
-    Year year{0};
+    Month month{ MonthNumber::invalid };
+    Day day{ 0 };
+    Year year{ 0 };
 
     explicit Date(Month m, Day d, Year y);
     explicit Date(const std::string& s);
     Date() = default;
 };
+
 
 class InvalidDate : public std::exception
 {
@@ -64,3 +68,6 @@ public:
 private:
     std::string mErrorMessage{};
 };
+
+std::istream& operator>>(std::istream& input, MonthNumber& output);
+std::ostream& operator<<(std::ostream& output, Month& month);

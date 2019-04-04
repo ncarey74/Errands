@@ -4,14 +4,21 @@
 #include <vector>
 #include <tuple>
 #include <queue>
+#include <stdexcept>
 
 
 std::istream& operator>>(std::istream& input, MonthNumber& output)
 {
-    unsigned char underlyingValue{};
+    ShortestSafeInteger underlyingValue{};
     input >> underlyingValue;
     output = static_cast<MonthNumber>(underlyingValue);
     return input;
+}
+
+std::ostream& operator<<(std::ostream& output, Month& month)
+{
+    output << month.name();
+    return output;
 }
 
 
@@ -19,12 +26,53 @@ std::istream& operator>>(std::istream& input, MonthNumber& output)
 // Month member function definitions
 //---------------------------------------------------------------------------------------------------------------------
 
-Month::Month(std::string s)
+MonthNumber foo(const std::string& s)
 {
-
+    if (s == "january" || "January")
+    {
+        return MonthNumber::january;
+    }
+    else if (s == "feburary" || "Feburary")
+    {
+        return MonthNumber::february;
+    }
+    else
+    {
+        throw std::invalid_argument{"I am a lazy and bad developer. This month string isn't supported yet."};
+    }
 }
 
+/**
+ * @brief
+ */
+Month::Month(const std::string& s)
+{
+    std::istringstream input{ s };
+    MonthNumber m{ MonthNumber::invalid };
+
+    if (input >> m)             // Input is an integral type ("01", "12", etc)
+    {
+        mNumber = m;
+    }
+    else                        // Input is a full name ("January", "December", etc)
+    {
+        mNumber = foo(s);
+    }
+    construct(mNumber);
+}
+
+/**
+ * @brief
+ */
 Month::Month(MonthNumber m) : mNumber(m)
+{
+    construct(mNumber);
+}
+
+/**
+ * @brief
+ */
+void Month::construct(MonthNumber m)
 {
     switch (mNumber)
     {
@@ -67,22 +115,36 @@ Month::Month(MonthNumber m) : mNumber(m)
     }
 }
 
+/**
+* @brief
+*/
 void Month::finalize(const std::string& name, Day numberOfDays)
 {
     mName = name;
     mNumberOfDays = numberOfDays;
+
+    std::cout << mName << std::endl;
 }
 
+/**
+* @brief
+*/
 std::string Month::name() const
 {
     return mName;
 }
 
+/**
+* @brief
+*/
 Day Month::numberOfDays() const
 {
     return mNumberOfDays;
 }
 
+/**
+* @brief
+*/
 MonthNumber Month::number() const
 {
     return mNumber;
@@ -93,6 +155,9 @@ MonthNumber Month::number() const
 // Date member function definitions
 //---------------------------------------------------------------------------------------------------------------------
 
+/**
+* @brief
+*/
 Date::Date(Month m, Day d, Year y) : month(m), day(d), year(y)
 {
     if (day > month.numberOfDays())
@@ -115,11 +180,15 @@ std::queue<std::string> dateElements(const std::string& s)
     return tokens;
 }
 
+/**
+ * @brief
+ */
 Date::Date(const std::string& s)
 {
     std::queue<std::string> tokens{ dateElements(s) };
 
-    std::stringstream monthToken{ tokens.front() };
+    auto one = tokens.front();
+    std::stringstream monthToken{ one };
     tokens.pop();
     std::stringstream dayToken{ tokens.front() };
     tokens.pop();
@@ -131,6 +200,8 @@ Date::Date(const std::string& s)
     month = Month{ monthNumber };
     dayToken >> day;
     yearToken >> year;
+
+    std::cout << "hey!!! " << month << "/" << day << "/" << year << std::endl;
 }
 
 
