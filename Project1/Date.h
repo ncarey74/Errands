@@ -77,6 +77,8 @@ private:
 * @details  Allows the date to be any arrangement of month-day-year (year-month-day, etc...). Enforces valid dates;
 *           the specified day is part of the specified month. A default date will have zero'd member data. Invalid
 *           input will produce a default date.
+* @note     Uses the compiler's default implementation of the move copy constructor and move assignment operator.
+*           A VS2013 bug prevents these two functions from being declared as default.
 * @todo     Consider if the design should allow for default dates with zero'd member data. If not, then an invalid date
 *           should throw an exception.
 */
@@ -89,6 +91,9 @@ struct Date
     explicit Date(Month m, Day d, Year y);
     explicit Date(const std::string& s);
     Date() = default;
+    ~Date() = default;
+    Date(const Date&) = default;
+    Date& operator=(const Date&) = default;
 };
 
 
