@@ -101,4 +101,17 @@ struct Date
 // Public helper function declarations
 //---------------------------------------------------------------------------------------------------------------------
 std::ostream& operator<<(std::ostream& output, Month& month);
+bool operator==(const Month& left, const Month& right);
+bool operator!=(const Month& left, const Month& right);
+bool operator>(const Month& left, const Month& right);
+bool operator<(const Month& left, const Month& right);
+bool operator>=(const Month& left, const Month& right);
+bool operator<=(const Month& left, const Month& right);
+
 std::ostream& operator<<(std::ostream& output, Date& date);
+bool operator==(const Date& left, const Date& right);
+bool operator!=(const Date& left, const Date& right);
+bool operator>(const Date& left, const Date& right);
+bool operator<(const Date& left, const Date& right);
+bool operator>=(const Date& left, const Date& right);
+bool operator<=(const Date& left, const Date& right);

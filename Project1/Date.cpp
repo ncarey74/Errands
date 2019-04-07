@@ -30,15 +30,11 @@ std::istream& operator>>(std::istream& input, MonthNumber& output)
     output = static_cast<MonthNumber>(underlyingValue);
     return input;
 }
-}
 
-//---------------------------------------------------------------------------------------------------------------------
-// Month member function definitions
-//---------------------------------------------------------------------------------------------------------------------
 /**
 * @brief
 */
-MonthNumber foo(const std::string& s)
+MonthNumber parsedMonth(const std::string& s)
 {
     if (s == "january" || "January")
     {
@@ -50,9 +46,14 @@ MonthNumber foo(const std::string& s)
     }
     else
     {
-        throw std::invalid_argument{"I am a lazy and bad developer. This month string isn't supported yet."};
+        throw std::invalid_argument{ "I am a lazy and bad developer. This month string isn't supported yet." };
     }
 }
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+// Month member function definitions
+//---------------------------------------------------------------------------------------------------------------------
 
 /**
  * @brief
@@ -68,7 +69,7 @@ Month::Month(const std::string& s)
     }
     else                        // Input is a full name ("January", "December", etc)
     {
-        mNumber = foo(s);
+        mNumber = parsedMonth(s);
     }
     construct(mNumber);
 }
@@ -232,4 +233,145 @@ std::ostream& operator<<(std::ostream& output, Date& date)
 {
     output << date.month << " " << date.day << ", " << date.year;
     return output;
+}
+
+/**
+* @brief
+*/
+bool operator==(const Month& left, const Month& right)
+{
+    return left.number() == right.number();
+}
+
+/**
+* @brief
+*/
+bool operator!=(const Month& left, const Month& right)
+{
+    return !(left == right);
+}
+
+/**
+* @brief
+*/
+bool operator>(const Month& left, const Month& right)
+{
+    return left.number() > right.number();
+}
+
+/**
+* @brief
+*/
+bool operator<(const Month& left, const Month& right)
+{
+    return left.number() < right.number();
+}
+
+/**
+* @brief
+*/
+bool operator>=(const Month& left, const Month& right)
+{
+    return left.number() >= right.number();
+}
+
+/**
+* @brief
+*/
+bool operator<=(const Month& left, const Month& right)
+{
+    return left.number() <= right.number();
+}
+
+/**
+* @brief
+*/
+bool operator==(const Date& left, const Date& right)
+{
+    bool sameMonth = (left.month == right.month);
+    bool sameDay = (left.day == right.day);
+    bool sameYear = (left.year == right.year);
+    bool sameDate = sameMonth == true && sameDay == true && sameYear == true;
+
+    return sameDate;
+}
+
+/**
+* @brief
+*/
+bool operator!=(const Date& left, const Date& right)
+{
+    return !(left == right);
+}
+
+/**
+* @brief
+*/
+bool operator>(const Date& left, const Date& right)
+{
+    bool greaterYear = (left.year > right.year);
+    bool sameYear = (left.year == right.year);
+    bool greaterMonth = (left.month > right.month);
+    bool sameMonth = (left.month == right.month);
+    bool greaterDay = left.day > right.day;
+
+    if (greaterYear || (sameYear && greaterMonth))
+    {
+        return true;
+    }
+    else if (sameYear && sameMonth)
+    {
+        return greaterDay ? true : false;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+/**
+* @brief
+*/
+bool operator<(const Date& left, const Date& right)
+{
+    bool lesserYear = left.year < right.year;
+    bool sameYear = (left.year == right.year);
+    bool lesserMonth = (left.month < right.month);
+    bool sameMonth = (left.month == right.month);
+    bool lesserDay = left.day < right.day;
+
+    if (lesserYear || (sameYear && lesserMonth))
+    {
+        return true;
+    }
+    else if (sameYear && sameMonth)
+    {
+        return lesserDay ? true : false;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+/**
+* @brief
+*/
+bool operator>=(const Date& left, const Date& right)
+{
+    bool sameDate = (left == right);
+    bool greaterDate = (left > right);
+
+    return sameDate || greaterDate;
+}
+
+/**
+* @brief
+*/
+bool operator<=(const Date& left, const Date& right)
+{
+    bool sameDate = (left == right);
+    bool lesserDate = (left < right);
+
+    return sameDate || lesserDate;
 }
