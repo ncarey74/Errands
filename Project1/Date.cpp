@@ -1,7 +1,7 @@
 /*
 *   @file   Date.cpp
 *   @author Carey Norslien
-*   @brief
+*   @brief  Defines the classes and functions needed to use calendar dates.
 */
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -21,7 +21,11 @@
 namespace
 {
 /**
-* @brief
+* @brief        Allows an input stream to set the value of the month number.
+* @note         Not a valid operation outside of this file.
+* @param[in]    input   laziness
+* @param[out]   output  laziness
+* @return       The input stream.
 */
 std::istream& operator>>(std::istream& input, MonthNumber& output)
 {
@@ -32,7 +36,10 @@ std::istream& operator>>(std::istream& input, MonthNumber& output)
 }
 
 /**
-* @brief
+* @brief        Parses the integral representation of the month from the string input.
+* @note         Not a valid operation outside of this file.
+* @param[in]    s   The name of the month.
+* @return       The integral representation of the month.
 */
 MonthNumber parsedMonth(const std::string& s)
 {
@@ -49,14 +56,36 @@ MonthNumber parsedMonth(const std::string& s)
         throw std::invalid_argument{ "I am a lazy and bad developer. This month string isn't supported yet." };
     }
 }
+
+/**
+* @brief        Given a date string, returns the month, day, and year values.
+* @param[in]    The date string in the format of "mm-dd-yyyy".
+* @return       The month, day, and year values contained in a queue to enforce the order.
+* @todo         Handle poorly formated date string.
+*/
+std::queue<std::string> dateElements(const std::string& s)
+{
+    std::istringstream input{ s };
+    std::queue<std::string> tokens{};
+    std::string token{};
+
+    while (getline(input, token, '-'))
+    {
+        tokens.push(token);
+    }
+
+    return tokens;
 }
+}
+
 
 //---------------------------------------------------------------------------------------------------------------------
 // Month member function definitions
 //---------------------------------------------------------------------------------------------------------------------
 
 /**
- * @brief
+ * @brief       Constructs a Month from a string input.
+ * @param[in]   s   The name of the month.
  */
 Month::Month(const std::string& s)
 {
@@ -65,29 +94,33 @@ Month::Month(const std::string& s)
 
     if (input >> m)             // Input is an integral type ("01", "12", etc)
     {
-        mNumber = m;
+        mCalendarPosition = m;
     }
     else                        // Input is a full name ("January", "December", etc)
     {
-        mNumber = parsedMonth(s);
+        mCalendarPosition = parsedMonth(s);
     }
-    construct(mNumber);
+    construct(mCalendarPosition);
 }
 
 /**
- * @brief
+ * @brief Constructs a Month from its integral representation.
+ * @param[in]   m   The integral representation of the month.
  */
-Month::Month(MonthNumber m) : mNumber(m)
+Month::Month(MonthNumber m) : mCalendarPosition(m)
 {
-    construct(mNumber);
+    construct(mCalendarPosition);
 }
 
 /**
- * @brief
+ * @brief       Begins construction of the Month.
+ * @detail      The details of a month, such as its string representation and the number of days in a month, can be
+ *              constructed from the month's position in the calendar. 
+ * @param[in]   m   The month's position in the calendar.
  */
 void Month::construct(MonthNumber m)
 {
-    switch (mNumber)
+    switch (mCalendarPosition)
     {
         case MonthNumber::january:
             finalize("January", 31);
@@ -129,7 +162,9 @@ void Month::construct(MonthNumber m)
 }
 
 /**
-* @brief
+* @brief        Finishes the construction of the Month.
+* @param[in]    name            The standardized string representation of the month.
+* @param[in]    numberOfDays    The number of days in a month.
 */
 void Month::finalize(const std::string& name, Day numberOfDays)
 {
@@ -138,7 +173,7 @@ void Month::finalize(const std::string& name, Day numberOfDays)
 }
 
 /**
-* @brief
+* @return   The string representation of the month.
 */
 std::string Month::name() const
 {
@@ -146,7 +181,7 @@ std::string Month::name() const
 }
 
 /**
-* @brief
+* @return   The number of days in the month.
 */
 Day Month::numberOfDays() const
 {
@@ -154,11 +189,11 @@ Day Month::numberOfDays() const
 }
 
 /**
-* @brief
+* @return   The calendar position of the month.
 */
-MonthNumber Month::number() const
+MonthNumber Month::calendarPosition() const
 {
-    return mNumber;
+    return mCalendarPosition;
 }
 
 
@@ -166,32 +201,24 @@ MonthNumber Month::number() const
 // Date member function definitions
 //---------------------------------------------------------------------------------------------------------------------
 /**
-* @brief
+* @brief    Constructs the date from the month, day, and year.
+* @details  If a month is not valid, then use the default values of zero month, zero day, and zero year.
+* @param[in]    m   Month
+* @param[in]    d   Day
+* @param[in]    y   Year
 */
 Date::Date(Month m, Day d, Year y) : mMonth(m), mDay(d), mYear(y)
 {
     if (mDay > mMonth.numberOfDays())
     {
         mDay = 0;
+        mYear = 0;
     }
-}
-
-std::queue<std::string> dateElements(const std::string& s)
-{
-    std::istringstream input{ s };
-    std::queue<std::string> tokens{};
-    std::string token{};
-
-    while (getline(input, token, '-'))
-    {
-        tokens.push(token);
-    }
-
-    return tokens;
 }
 
 /**
- * @brief
+ * @brief       Constructs the date from a date string in the format "mm-dd-yyyy".
+ * @param[in]   s   Date string formated "mm-dd-yyyy".
  */
 Date::Date(const std::string& s)
 {
@@ -214,7 +241,7 @@ Date::Date(const std::string& s)
 }
 
 /**
-* @brief
+* @return   The month.
 */
 Month Date::month() const
 {
@@ -222,7 +249,7 @@ Month Date::month() const
 }
 
 /**
-* @brief
+* @return   The day.
 */
 Day Date::day() const
 {
@@ -230,7 +257,7 @@ Day Date::day() const
 }
 
 /**
-* @brief
+* @return   The year.
 */
 Year Date::year() const
 {
@@ -242,7 +269,10 @@ Year Date::year() const
 // Public helper function definitions
 //---------------------------------------------------------------------------------------------------------------------
 /**
-* @brief
+* @brief        Outputs the month, such as "January" or "December".
+* @param[in]    output  laziness
+* @param[in]    month   The month to output.
+* @return       laziness
 */
 std::ostream& operator<<(std::ostream& output, Month& month)
 {
@@ -251,7 +281,10 @@ std::ostream& operator<<(std::ostream& output, Month& month)
 }
 
 /**
-* @brief
+* @brief        Outputs the date, such as "January 01, 2000" or "December 31, 2999".
+* @param[in]    output  laziness
+* @param[in]    month   The date to output.
+* @return       laziness
 */
 std::ostream& operator<<(std::ostream& output, Date& date)
 {
@@ -260,15 +293,21 @@ std::ostream& operator<<(std::ostream& output, Date& date)
 }
 
 /**
-* @brief
+* @brief        Equality operator for months.
+* @param[in]    left    lazy
+* @param[in]    right   lazy
+* @return       lazy
 */
 bool operator==(const Month& left, const Month& right)
 {
-    return left.number() == right.number();
+    return left.calendarPosition() == right.calendarPosition();
 }
 
 /**
-* @brief
+* @brief    Inequality operator for months.
+* @param[in]    left    lazy
+* @param[in]    right   lazy
+* @return       lazy
 */
 bool operator!=(const Month& left, const Month& right)
 {
@@ -276,39 +315,54 @@ bool operator!=(const Month& left, const Month& right)
 }
 
 /**
-* @brief
+* @brief        Greater than operator for months.
+* @param[in]    left    lazy
+* @param[in]    right   lazy
+* @return       lazy
 */
 bool operator>(const Month& left, const Month& right)
 {
-    return left.number() > right.number();
+    return left.calendarPosition() > right.calendarPosition();
 }
 
 /**
-* @brief
+* @brief        Less than operator for months.
+* @param[in]    left    lazy
+* @param[in]    right   lazy
+* @return       lazy
 */
 bool operator<(const Month& left, const Month& right)
 {
-    return left.number() < right.number();
+    return left.calendarPosition() < right.calendarPosition();
 }
 
 /**
-* @brief
+* @brief        Greater than or equal to operator for months.
+* @param[in]    left    lazy
+* @param[in]    right   lazy
+* @return       lazy
 */
 bool operator>=(const Month& left, const Month& right)
 {
-    return left.number() >= right.number();
+    return left.calendarPosition() >= right.calendarPosition();
 }
 
 /**
-* @brief
+* @brief        Less than or equal to operator for months.
+* @param[in]    left    lazy
+* @param[in]    right   lazy
+* @return       lazy
 */
 bool operator<=(const Month& left, const Month& right)
 {
-    return left.number() <= right.number();
+    return left.calendarPosition() <= right.calendarPosition();
 }
 
 /**
-* @brief
+* @brief        Equality operator for dates.
+* @param[in]    left    lazy
+* @param[in]    right   lazy
+* @return       lazy
 */
 bool operator==(const Date& left, const Date& right)
 {
@@ -321,7 +375,10 @@ bool operator==(const Date& left, const Date& right)
 }
 
 /**
-* @brief
+* @brief        Inequality operator for dates.
+* @param[in]    left    lazy
+* @param[in]    right   lazy
+* @return       lazy
 */
 bool operator!=(const Date& left, const Date& right)
 {
@@ -329,7 +386,10 @@ bool operator!=(const Date& left, const Date& right)
 }
 
 /**
-* @brief
+* @brief        Greater than operator for dates.
+* @param[in]    left    lazy
+* @param[in]    right   lazy
+* @return       lazy
 */
 bool operator>(const Date& left, const Date& right)
 {
@@ -354,7 +414,10 @@ bool operator>(const Date& left, const Date& right)
 }
 
 /**
-* @brief
+* @brief        Less than operator for dates.
+* @param[in]    left    lazy
+* @param[in]    right   lazy
+* @return       lazy
 */
 bool operator<(const Date& left, const Date& right)
 {
@@ -365,7 +428,10 @@ bool operator<(const Date& left, const Date& right)
 }
 
 /**
-* @brief
+* @brief        Greater than or equal to operator for dates.
+* @param[in]    left    lazy
+* @param[in]    right   lazy
+* @return       lazy
 */
 bool operator>=(const Date& left, const Date& right)
 {
@@ -376,7 +442,10 @@ bool operator>=(const Date& left, const Date& right)
 }
 
 /**
-* @brief
+* @brief        Less than or equal to operator for dates.
+* @param[in]    left    lazy
+* @param[in]    right   lazy
+* @return       lazy
 */
 bool operator<=(const Date& left, const Date& right)
 {

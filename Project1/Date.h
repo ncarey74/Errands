@@ -1,7 +1,7 @@
 /*
 *   @file   Date.h
 *   @author Carey Norslien
-*   @brief  
+*   @brief  Declares the classes and functions needed to use calendar dates.
 */
 #pragma once
 
@@ -60,10 +60,10 @@ public:
 
     std::string name() const;
     Day numberOfDays() const;
-    MonthNumber number() const;
+    MonthNumber calendarPosition() const;
 
 private:
-    MonthNumber mNumber{ MonthNumber::invalid };
+    MonthNumber mCalendarPosition{ MonthNumber::invalid };
     std::string mName = "Invalid month";
     Day mNumberOfDays{ 0 };
 
@@ -95,6 +95,7 @@ public:
     Month month() const;
     Day day() const;
     Year year() const;
+
 private:
     Month mMonth{ MonthNumber::invalid };
     Day mDay{ 0 };
