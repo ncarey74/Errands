@@ -82,18 +82,23 @@ private:
 * @todo     Consider if the design should allow for default dates with zero'd member data. If not, then an invalid date
 *           should throw an exception.
 */
-struct Date
+class Date
 {
-    Month month{ MonthNumber::invalid };
-    Day day{ 0 };
-    Year year{ 0 };
-
+public:
     explicit Date(Month m, Day d, Year y);
     explicit Date(const std::string& s);
     Date() = default;
     ~Date() = default;
     Date(const Date&) = default;
     Date& operator=(const Date&) = default;
+
+    Month month() const;
+    Day day() const;
+    Year year() const;
+private:
+    Month mMonth{ MonthNumber::invalid };
+    Day mDay{ 0 };
+    Year mYear{ 0 };
 };
 
 

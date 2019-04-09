@@ -168,11 +168,11 @@ MonthNumber Month::number() const
 /**
 * @brief
 */
-Date::Date(Month m, Day d, Year y) : month(m), day(d), year(y)
+Date::Date(Month m, Day d, Year y) : mMonth(m), mDay(d), mYear(y)
 {
-    if (day > month.numberOfDays())
+    if (mDay > mMonth.numberOfDays())
     {
-        day = 0;
+        mDay = 0;
     }
 }
 
@@ -206,11 +206,35 @@ Date::Date(const std::string& s)
     MonthNumber monthNumber{};
 
     monthToken >> monthNumber;
-    month = Month{ monthNumber };
-    dayToken >> day;
-    yearToken >> year;
+    mMonth = Month{ monthNumber };
+    dayToken >> mDay;
+    yearToken >> mYear;
 
     std::cout << *this << std::endl;
+}
+
+/**
+* @brief
+*/
+Month Date::month() const
+{
+    return mMonth;
+}
+
+/**
+* @brief
+*/
+Day Date::day() const
+{
+    return mDay;
+}
+
+/**
+* @brief
+*/
+Year Date::year() const
+{
+    return mYear;
 }
 
 
@@ -231,7 +255,7 @@ std::ostream& operator<<(std::ostream& output, Month& month)
 */
 std::ostream& operator<<(std::ostream& output, Date& date)
 {
-    output << date.month << " " << date.day << ", " << date.year;
+    output << date.month() << " " << date.day() << ", " << date.year();
     return output;
 }
 
@@ -288,10 +312,10 @@ bool operator<=(const Month& left, const Month& right)
 */
 bool operator==(const Date& left, const Date& right)
 {
-    bool sameMonth = (left.month == right.month);
-    bool sameDay = (left.day == right.day);
-    bool sameYear = (left.year == right.year);
-    bool sameDate = sameMonth == true && sameDay == true && sameYear == true;
+    bool sameMonth = (left.month() == right.month());
+    bool sameDay = (left.day() == right.day());
+    bool sameYear = (left.year() == right.year());
+    bool sameDate = (sameMonth == true) && (sameDay == true) && (sameYear == true);
 
     return sameDate;
 }
@@ -309,11 +333,11 @@ bool operator!=(const Date& left, const Date& right)
 */
 bool operator>(const Date& left, const Date& right)
 {
-    bool greaterYear = (left.year > right.year);
-    bool sameYear = (left.year == right.year);
-    bool greaterMonth = (left.month > right.month);
-    bool sameMonth = (left.month == right.month);
-    bool greaterDay = left.day > right.day;
+    bool greaterYear = (left.year() > right.year());
+    bool sameYear = (left.year() == right.year());
+    bool greaterMonth = (left.month() > right.month());
+    bool sameMonth = (left.month() == right.month());
+    bool greaterDay = (left.day() > right.day());
 
     if (greaterYear || (sameYear && greaterMonth))
     {
@@ -334,24 +358,10 @@ bool operator>(const Date& left, const Date& right)
 */
 bool operator<(const Date& left, const Date& right)
 {
-    bool lesserYear = left.year < right.year;
-    bool sameYear = (left.year == right.year);
-    bool lesserMonth = (left.month < right.month);
-    bool sameMonth = (left.month == right.month);
-    bool lesserDay = left.day < right.day;
+    bool sameDate = (left == right);
+    bool greaterDate = (left > right);
 
-    if (lesserYear || (sameYear && lesserMonth))
-    {
-        return true;
-    }
-    else if (sameYear && sameMonth)
-    {
-        return lesserDay ? true : false;
-    }
-    else
-    {
-        return false;
-    }
+    return !sameDate && !greaterDate;
 }
 
 /**
