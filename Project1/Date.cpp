@@ -16,6 +16,91 @@
 
 
 //---------------------------------------------------------------------------------------------------------------------
+// Private class definitions
+//---------------------------------------------------------------------------------------------------------------------
+namespace
+{
+/**
+* @brief Exception for when too many elements are added to a container.
+*/
+class TooManyElements : public std::exception
+{
+public:
+    explicit TooManyElements(const std::string& what);
+    virtual const char* what() const throw();
+
+private:
+    std::string mErrorMessage{};
+};
+
+/**
+* @brief
+*/
+TooManyElements::TooManyElements(const std::string& what)
+{
+    std::ostringstream ss{};
+    ss << "Too many elements were added to container type: " << what;
+    mErrorMessage = ss.str();
+}
+
+/**
+* @brief
+*/
+const char* TooManyElements::what() const throw()
+{
+    return mErrorMessage.c_str();
+}
+
+/**
+* @brief    Container of parsed date string tokens.
+* @details  Assumes order of month, day, year. This class is to be used internally for the Date class.
+*/
+class DateElements
+{
+public:
+    void add(std::string s);
+    std::string get();
+private:
+    std::queue<std::string> mQueue;
+};
+
+/**
+* @brief        Adds a token from the date string input.
+* @param[in]    s   Token from the string input (month, day, or year)
+* @throw        TooManyElements if a token was added beyond month, day, and year.
+*/
+void DateElements::add(std::string s)
+{
+    if (mQueue.size() < 3)
+    {
+        mQueue.push(s);
+    }
+    else
+    {
+        throw TooManyElements{ "DateElements" };
+    }
+}
+
+/**
+* @brief
+*/
+std::string DateElements::get()
+{
+    if (mQueue.empty() == false)
+    {
+        auto element = mQueue.front();
+        mQueue.pop();
+        return element;
+    }
+    else
+    {
+        return "0";
+    }
+}
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
 // Private helper function definitions
 //---------------------------------------------------------------------------------------------------------------------
 namespace
@@ -63,15 +148,15 @@ MonthNumber parsedMonth(const std::string& s)
 * @return       The month, day, and year values contained in a queue to enforce the order.
 * @todo         Handle poorly formated date string.
 */
-std::queue<std::string> dateElements(const std::string& s)
+DateElements dateElements(const std::string& s)
 {
     std::istringstream input{ s };
-    std::queue<std::string> tokens{};
+    DateElements tokens{};
     std::string token{};
 
     while (getline(input, token, '-'))
     {
-        tokens.push(token);
+        tokens.add(token);
     }
 
     return tokens;
@@ -104,7 +189,7 @@ Month::Month(const std::string& s)
 }
 
 /**
- * @brief Constructs a Month from its integral representation.
+ * @brief       Constructs a Month from its integral representation.
  * @param[in]   m   The integral representation of the month.
  */
 Month::Month(MonthNumber m) : mCalendarPosition(m)
@@ -201,8 +286,8 @@ MonthNumber Month::calendarPosition() const
 // Date member function definitions
 //---------------------------------------------------------------------------------------------------------------------
 /**
-* @brief    Constructs the date from the month, day, and year.
-* @details  If a month is not valid, then use the default values of zero month, zero day, and zero year.
+* @brief        Constructs the date from the month, day, and year.
+* @details      If a month is not valid, then use the default values of zero month, zero day, and zero year.
 * @param[in]    m   Month
 * @param[in]    d   Day
 * @param[in]    y   Year
@@ -222,13 +307,11 @@ Date::Date(Month m, Day d, Year y) : mMonth(m), mDay(d), mYear(y)
  */
 Date::Date(const std::string& s)
 {
-    std::queue<std::string> tokens{ dateElements(s) };
+    DateElements tokens{ dateElements(s) };
 
-    std::istringstream monthToken{ tokens.front() };
-    tokens.pop();
-    std::istringstream dayToken{ tokens.front() };
-    tokens.pop();
-    std::istringstream yearToken{ tokens.front() };
+    std::istringstream monthToken{ tokens.get() };
+    std::istringstream dayToken{ tokens.get() };
+    std::istringstream yearToken{ tokens.get() };
 
     MonthNumber monthNumber{};
 
