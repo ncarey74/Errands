@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GroceryShopping", "Project1
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PolymorphismReminder", "PolymorphismReminder\PolymorphismReminder.vcxproj", "{1D29793E-C1E4-47B0-8E3A-1FAC31A22A88}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CompositeClassToStruct", "CompositeClassToStruct\CompositeClassToStruct.vcxproj", "{963D6AF2-29C8-4DA9-894B-28FF871E511D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -14,12 +16,15 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EC978373-E2CC-47C7-9F68-D3CCF0DC2584}.Debug|Win32.ActiveCfg = Debug|Win32
-		{EC978373-E2CC-47C7-9F68-D3CCF0DC2584}.Debug|Win32.Build.0 = Debug|Win32
 		{EC978373-E2CC-47C7-9F68-D3CCF0DC2584}.Release|Win32.ActiveCfg = Release|Win32
 		{EC978373-E2CC-47C7-9F68-D3CCF0DC2584}.Release|Win32.Build.0 = Release|Win32
 		{1D29793E-C1E4-47B0-8E3A-1FAC31A22A88}.Debug|Win32.ActiveCfg = Debug|Win32
 		{1D29793E-C1E4-47B0-8E3A-1FAC31A22A88}.Release|Win32.ActiveCfg = Release|Win32
 		{1D29793E-C1E4-47B0-8E3A-1FAC31A22A88}.Release|Win32.Build.0 = Release|Win32
+		{963D6AF2-29C8-4DA9-894B-28FF871E511D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{963D6AF2-29C8-4DA9-894B-28FF871E511D}.Debug|Win32.Build.0 = Debug|Win32
+		{963D6AF2-29C8-4DA9-894B-28FF871E511D}.Release|Win32.ActiveCfg = Release|Win32
+		{963D6AF2-29C8-4DA9-894B-28FF871E511D}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
