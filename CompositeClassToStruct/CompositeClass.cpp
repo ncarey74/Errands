@@ -10,14 +10,17 @@ void CompositeClass::add(Animal* a)
 /**
 * @brief    Returns the composition as a POD struct.
 */
-PlainStruct CompositeClass::get()
+std::unique_ptr<PlainStruct> CompositeClass::get()
 {
-    PlainStruct plainStruct{};
-    plainStruct.alpha = mAnimalKingdom.back().get()->id();
-    mAnimalKingdom.pop_back();
-    plainStruct.beta = mAnimalKingdom.back().get()->id();
+    //PlainStruct plainStruct{};
 
-    std::cout << plainStruct.alpha << " " << plainStruct.beta << std::endl;
+    std::unique_ptr<PlainStruct> plainStruct{ new PlainStruct{} };
+
+    plainStruct->alpha = mAnimalKingdom.back().get()->id();
+    mAnimalKingdom.pop_back();
+    plainStruct->beta = mAnimalKingdom.back().get()->id();
+
+    std::cout << plainStruct->alpha << " " << plainStruct->beta << std::endl;
     
     return plainStruct;
 }

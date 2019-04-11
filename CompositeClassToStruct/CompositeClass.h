@@ -57,7 +57,7 @@ class CompositeClass
 public:
     CompositeClass() = default;
     void add(Animal* a);
-    PlainStruct get();
+    std::unique_ptr<PlainStruct> get();
 private:
     AnimalKingdom mAnimalKingdom;
 };

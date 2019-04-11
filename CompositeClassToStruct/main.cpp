@@ -16,7 +16,8 @@ int main()
     CompositeClass c{};
     c.add(new Cat{});
     c.add(new Dog{});
-    p = c.get();
+    auto returnedUniquePointer = c.get();
+    p = *returnedUniquePointer;
 
     char input{};
     std::cin >> input;
