@@ -9,11 +9,11 @@ void CompositeClass::add(Animal* a)
 
 /**
 * @brief    Returns the composition as a POD struct.
+* @remark   The full POD struct could be collectively hard-to-copy. As such, experiment with returning a handle to a
+*           dynamically allocated POD struct.
 */
 std::unique_ptr<PlainStruct> CompositeClass::get()
 {
-    //PlainStruct plainStruct{};
-
     std::unique_ptr<PlainStruct> plainStruct{ new PlainStruct{} };
 
     plainStruct->alpha = mAnimalKingdom.back().get()->id();
