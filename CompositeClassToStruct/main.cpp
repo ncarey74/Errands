@@ -11,13 +11,14 @@ int main()
 {
     std::cout << "hello world" << std::endl;
 
-    PlainStruct p{};
-
     CompositeClass c{};
     c.add(new Cat{});
     c.add(new Dog{});
     auto returnedUniquePointer = c.get();
-    p = *returnedUniquePointer;
+
+    PlainStruct p = *returnedUniquePointer;
+
+    std::cout << "I got " << p.alpha << " and " << p.beta << std::endl;
 
     char input{};
     std::cin >> input;
