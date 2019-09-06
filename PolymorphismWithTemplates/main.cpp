@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <map>
 #include <iomanip>
 #include <fstream>
 
@@ -102,16 +103,29 @@ private:
 class DataLogger
 {
 public:
+   DataLogger() = default;
+
+   void registerFile(Path path)
+   {
+      mFiles.emplace(path, path);  // Note that emplace is used, not insert. The key is NOT the same as the value!
+   }
 
    template<typename T>
-   void write(T data)
+   void write(Path file, T data)
    {
       std::ostringstream ss{};
       ss << data;
-      mCsvFile.write(ss.str());
+      try
+      {
+         mFiles.at(file).write(ss.str());
+      }
+      catch (std::out_of_range e)
+      {
+         std::cout << "File not registered: " << file << std::endl;
+      }
    }
 private:
-   CsvFile mCsvFile{ "D:\\Documents\\Temp Docs\\example.csv" };
+   std::map<Path, CsvFile> mFiles{};
 };
 
 
@@ -156,27 +170,19 @@ int main()
 {
    std::cout << "Hello world!" << std::endl;
 
-   DataLogger d{};
+   Path logFile{ "D:\\Documents\\Temp Docs\\example.csv" };
+   Path anotherLogFile{ "D:\\Documents\\Temp Docs\\another_file.csv" };
+   DataLogger logger{};
 
-   Rectangle r{};
-   r.height = 10;
-   r.width = 20;
+   logger.registerFile(logFile);
+   logger.registerFile(anotherLogFile);
 
-   d.write(r);
-
-   Book b{};
-   b.author = "Tolkien";
-   b.title = "The Silmarillion";
-
-   d.write(b);
-
-   Secret alpha = createAlpha();
-   Secret beta = createBeta();
-   ComputerData gamma = createGamma();
-
-   d.write(alpha);
-   d.write(beta);
-   d.write(gamma);
+   logger.write(logFile, Rectangle{ 10, 20 });
+   logger.write(logFile, Book{ "Tolkien", "The Silmarillion" });
+   logger.write(logFile, createAlpha());
+   logger.write(logFile, createBeta());
+   logger.write(anotherLogFile, createGamma());
+   logger.write(anotherLogFile, Book{ "Martin", "A Game of Thrones" });
 
    char c{};
 
