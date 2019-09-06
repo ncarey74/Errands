@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <iomanip>
 
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -21,6 +22,12 @@ struct Book
 };
 
 struct Secret
+{
+   std::string name;
+   std::vector<int> data;
+};
+
+struct ComputerData
 {
    std::string name;
    std::vector<int> data;
@@ -53,6 +60,20 @@ std::ostream& operator<<(std::ostream& output, const Secret s)
 
    return output;
 }
+
+std::ostream& operator<<(std::ostream& output, ComputerData c)
+{
+   output << "name: " << c.name << "; numbers: ";
+   for (auto& i : c.data)
+   {
+      output << "0x" << std::setfill('0') << std::setw(4) << std::hex << i << ", ";
+   }
+   output << "; length: " << c.data.size() << std::endl;
+
+   return output;
+}
+
+
 
 //---------------------------------------------------------------------------------------------------------------------
 // Data logger classes
@@ -88,12 +109,23 @@ Secret createAlpha()
 Secret createBeta()
 {
    Secret s{};
-   s.name = "Zakue";
+   s.name = "Zaku";
 
    std::vector<int> v{ 4, 5, 6, 7, 8 };
    s.data = v;
 
    return s;
+}
+
+ComputerData createGamma()
+{
+   ComputerData c{};
+   c.name = "Zephyr";
+
+   std::vector<int> v{ 256, 257, 432, 7, 22 };
+   c.data = v;
+
+   return c;
 }
 
 int main()
@@ -116,9 +148,11 @@ int main()
 
    Secret alpha = createAlpha();
    Secret beta = createBeta();
+   ComputerData gamma = createGamma();
 
    d.write(alpha);
    d.write(beta);
+   d.write(gamma);
 
    char c{};
 
