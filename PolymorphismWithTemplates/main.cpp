@@ -3,6 +3,7 @@
 #include <sstream>
 #include <vector>
 #include <iomanip>
+#include <fstream>
 
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -51,24 +52,24 @@ std::ostream& operator<<(std::ostream& output, const Book b)
 
 std::ostream& operator<<(std::ostream& output, const Secret s)
 {
-   output << "name: " << s.name << "; numbers: ";
+   output << "name: " << s.name << ", numbers: ";
    for (auto& i : s.data)
    {
       output << i << ", ";
    }
-   output << "; length: " << s.data.size() << std::endl;
+   output << ", length: " << s.data.size() << std::endl;
 
    return output;
 }
 
 std::ostream& operator<<(std::ostream& output, ComputerData c)
 {
-   output << "name: " << c.name << "; numbers: ";
+   output << "name: " << c.name << ", numbers: ";
    for (auto& i : c.data)
    {
       output << "0x" << std::setfill('0') << std::setw(4) << std::hex << i << ", ";
    }
-   output << "; length: " << c.data.size() << std::endl;
+   output << ", length: " << c.data.size() << std::endl;
 
    return output;
 }
@@ -79,6 +80,25 @@ std::ostream& operator<<(std::ostream& output, ComputerData c)
 // Data logger classes
 //---------------------------------------------------------------------------------------------------------------------
 
+typedef std::string Path;
+typedef std::string CommaSeparatedValue;
+
+class CsvFile
+{
+public:
+   CsvFile(Path path) : mPath(path) {}
+   void write(CommaSeparatedValue csv)
+   {
+      std::ofstream file{mPath, std::ios::app};
+      if (file.is_open())
+      {
+         file << csv;
+      }
+   }
+private:
+   Path mPath;
+};
+
 class DataLogger
 {
 public:
@@ -86,8 +106,12 @@ public:
    template<typename T>
    void write(T data)
    {
-      std::cout << data;
+      std::ostringstream ss{};
+      ss << data;
+      mCsvFile.write(ss.str());
    }
+private:
+   CsvFile mCsvFile{ "D:\\Documents\\Temp Docs\\example.csv" };
 };
 
 
