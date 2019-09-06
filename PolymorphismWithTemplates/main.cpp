@@ -133,39 +133,6 @@ private:
 // Main Program
 //---------------------------------------------------------------------------------------------------------------------
 
-Secret createAlpha()
-{
-   Secret s{};
-   s.name = "Gundam";
-
-   std::vector<int> v{1, 2, 3};
-   s.data = v;
-
-   return s;
-}
-
-Secret createBeta()
-{
-   Secret s{};
-   s.name = "Zaku";
-
-   std::vector<int> v{ 4, 5, 6, 7, 8 };
-   s.data = v;
-
-   return s;
-}
-
-ComputerData createGamma()
-{
-   ComputerData c{};
-   c.name = "Zephyr";
-
-   std::vector<int> v{ 256, 257, 432, 7, 22 };
-   c.data = v;
-
-   return c;
-}
-
 int main()
 {
    std::cout << "Hello world!" << std::endl;
@@ -179,9 +146,9 @@ int main()
 
    logger.write(logFile, Rectangle{ 10, 20 });
    logger.write(logFile, Book{ "Tolkien", "The Silmarillion" });
-   logger.write(logFile, createAlpha());
-   logger.write(logFile, createBeta());
-   logger.write(anotherLogFile, createGamma());
+   logger.write(logFile, Secret{ "Gundam", std::vector<int>{ 1, 2, 3 } });
+   logger.write(logFile, Secret{ "Zaku", std::vector<int>{ 4, 5, 6, 7, 8 } });
+   logger.write(anotherLogFile, ComputerData{ "Zephyr", std::vector<int>{ 256, 257, 432, 7, 22 } });
    logger.write(anotherLogFile, Book{ "Martin", "A Game of Thrones" });
 
    char c{};
