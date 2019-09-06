@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PolymorphismReminder", "Pol
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CompositeClassToStruct", "CompositeClassToStruct\CompositeClassToStruct.vcxproj", "{963D6AF2-29C8-4DA9-894B-28FF871E511D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PolymorphismWithTemplates", "PolymorphismWithTemplates\PolymorphismWithTemplates.vcxproj", "{A2114157-C42B-41FA-A000-3F8EAE68F2C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -25,6 +27,10 @@ Global
 		{963D6AF2-29C8-4DA9-894B-28FF871E511D}.Debug|Win32.Build.0 = Debug|Win32
 		{963D6AF2-29C8-4DA9-894B-28FF871E511D}.Release|Win32.ActiveCfg = Release|Win32
 		{963D6AF2-29C8-4DA9-894B-28FF871E511D}.Release|Win32.Build.0 = Release|Win32
+		{A2114157-C42B-41FA-A000-3F8EAE68F2C3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A2114157-C42B-41FA-A000-3F8EAE68F2C3}.Debug|Win32.Build.0 = Debug|Win32
+		{A2114157-C42B-41FA-A000-3F8EAE68F2C3}.Release|Win32.ActiveCfg = Release|Win32
+		{A2114157-C42B-41FA-A000-3F8EAE68F2C3}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
