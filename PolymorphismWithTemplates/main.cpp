@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
 
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -19,6 +20,11 @@ struct Book
    std::string title;
 };
 
+struct Secret
+{
+   std::string name;
+   std::vector<int> data;
+};
 
 //---------------------------------------------------------------------------------------------------------------------
 // Output streaming overloads
@@ -33,6 +39,18 @@ std::ostream& operator<<(std::ostream& output, const Rectangle r)
 std::ostream& operator<<(std::ostream& output, const Book b)
 {
    output << "author: " << b.author << ", title: " << b.title << std::endl;
+   return output;
+}
+
+std::ostream& operator<<(std::ostream& output, const Secret s)
+{
+   output << "name: " << s.name << "; numbers: ";
+   for (auto& i : s.data)
+   {
+      output << i << ", ";
+   }
+   output << "; length: " << s.data.size() << std::endl;
+
    return output;
 }
 
@@ -56,6 +74,28 @@ public:
 // Main Program
 //---------------------------------------------------------------------------------------------------------------------
 
+Secret createAlpha()
+{
+   Secret s{};
+   s.name = "Gundam";
+
+   std::vector<int> v{1, 2, 3};
+   s.data = v;
+
+   return s;
+}
+
+Secret createBeta()
+{
+   Secret s{};
+   s.name = "Zakue";
+
+   std::vector<int> v{ 4, 5, 6, 7, 8 };
+   s.data = v;
+
+   return s;
+}
+
 int main()
 {
    std::cout << "Hello world!" << std::endl;
@@ -73,6 +113,12 @@ int main()
    b.title = "The Silmarillion";
 
    d.write(b);
+
+   Secret alpha = createAlpha();
+   Secret beta = createBeta();
+
+   d.write(alpha);
+   d.write(beta);
 
    char c{};
 
