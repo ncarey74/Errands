@@ -8,6 +8,11 @@
 
 static const int maxSize = 20;  // Visual Studio 2013 is dumb and doesn't like constexpr
 
+
+//---------------------------------------------------------------------------------------------------------------------
+// The array all algorithms must utilize
+//---------------------------------------------------------------------------------------------------------------------
+
 /**
  * All algorithms must write to a plain array, but some algorithms need to write more elements than other algorithms;
  * therefore, allocate enough space for all alogrithms to use and say how much of that array is actually written.
@@ -17,6 +22,22 @@ struct CommonReturnType
    std::array<int, maxSize> buffer;  // We'll have some fun and use std::array instead of plain array
    size_t length;
 };
+
+/**
+* Print out the hard work of the mysterious algorithm.
+*/
+void print(CommonReturnType c)
+{
+   for (size_t i = 0; i < c.length; i++)
+   {
+      std::cout << c.buffer[i] << std::endl;
+   }
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+// Small part of a much grander design, a great coordinator of algorithms... to be done later
+//---------------------------------------------------------------------------------------------------------------------
 
 /**
  * Fill up an array using different algorithms
@@ -29,6 +50,11 @@ public:
 private:
    Algorithm mAlgorithm{};
 };
+
+
+//---------------------------------------------------------------------------------------------------------------------
+// Algorithm definitions
+//---------------------------------------------------------------------------------------------------------------------
 
 /**
  * Fill the whole array with twos.
@@ -78,16 +104,10 @@ struct AlgorithmFancy
    }
 };
 
-/**
-* Print out the hard work of the mysterious algorithm.
-*/
-void print(CommonReturnType c)
-{
-   for (size_t i = 0; i < c.length; i++)
-   {
-      std::cout << c.buffer[i] << std::endl;
-   }
-}
+
+//---------------------------------------------------------------------------------------------------------------------
+// Main function
+//---------------------------------------------------------------------------------------------------------------------
 
 int main()
 {
