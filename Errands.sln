@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PolymorphismWithTemplates",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MoreTemplates", "MoreTemplates\MoreTemplates.vcxproj", "{6B511FFB-B8F6-4FAA-A190-1C75A737EFB3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Matrices", "Matrices\Matrices.vcxproj", "{8FFE0224-9E54-4748-906F-8EA0735D9428}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -37,6 +39,10 @@ Global
 		{6B511FFB-B8F6-4FAA-A190-1C75A737EFB3}.Debug|Win32.Build.0 = Debug|Win32
 		{6B511FFB-B8F6-4FAA-A190-1C75A737EFB3}.Release|Win32.ActiveCfg = Release|Win32
 		{6B511FFB-B8F6-4FAA-A190-1C75A737EFB3}.Release|Win32.Build.0 = Release|Win32
+		{8FFE0224-9E54-4748-906F-8EA0735D9428}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8FFE0224-9E54-4748-906F-8EA0735D9428}.Debug|Win32.Build.0 = Debug|Win32
+		{8FFE0224-9E54-4748-906F-8EA0735D9428}.Release|Win32.ActiveCfg = Release|Win32
+		{8FFE0224-9E54-4748-906F-8EA0735D9428}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
