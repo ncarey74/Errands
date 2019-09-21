@@ -1,4 +1,5 @@
 #include "Matrix.h"
+#include "Exceptions.h"
 
 #include <iostream>
 #include <algorithm>
@@ -25,7 +26,7 @@ void Matrix::addRow(std::vector<int> row)
 {
    if (row.size() > mDimension.n)
    {
-      throw std::length_error("uh oh");
+      throw TooManyColumns(std::to_string(row.size()));
    }
    if (mRowWritten.at(mLastRowWritten) == false)
    {
@@ -37,6 +38,8 @@ void Matrix::addRow(std::vector<int> row)
 
 void Matrix::print() const
 {
+   std::cout << "The matrix is " << mDimension.m << "x" << mDimension.n << std::endl;
+
    for (const auto& i : mData)
    {
       printRow(i);
