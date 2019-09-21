@@ -14,3 +14,12 @@ private:
    std::string mErrorMessage{};
 };
 
+class TooManyRows : public std::exception
+{
+public:
+   explicit TooManyRows(const std::string& what);
+   virtual const char* what() const throw();
+
+private:
+   std::string mErrorMessage{};
+};

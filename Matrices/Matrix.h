@@ -8,6 +8,26 @@ struct Dimension
    size_t n;
 };
 
+class MatrixRow
+{
+public:
+   MatrixRow(size_t length);
+   MatrixRow(const MatrixRow&) = default;
+   MatrixRow& operator=(const MatrixRow&) = default;
+
+   // Modifiers
+   bool fillRow(std::vector<int> row);
+   
+   // Other member functions
+   void print() const;
+
+private:
+   std::vector<int> mRowData;
+   bool mWritten;
+
+   MatrixRow() = delete;
+};
+
 /**
 * @note     Uses the compiler's default implementation of the move copy constructor and move assignment operator.
 *           A VS2013 bug prevents these two functions from being declared as default.
@@ -18,16 +38,15 @@ public:
    Matrix(Dimension d);
    ~Matrix() = default;
    
+   // Modifiers
    void addRow(std::vector<int> row);
 
+   // Other member functions
    void print() const;
+
 private:
    Dimension mDimension;
-   std::vector<std::vector<int>> mData;  // Do the obvious implementation for now. Be more efficient later.
-   std::vector<bool> mRowWritten;
-   size_t mLastRowWritten;
-
-   void printRow(std::vector<int> row) const;
+   std::vector<MatrixRow> mData;
 
    Matrix() = delete;
    Matrix(const Matrix&) = delete;
