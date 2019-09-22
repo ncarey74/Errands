@@ -8,6 +8,9 @@ struct Dimension
    size_t n;
 };
 
+bool operator==(const Dimension& left, const Dimension& right);
+bool operator!=(const Dimension& left, const Dimension& right);
+
 class MatrixRow
 {
 public:
@@ -26,6 +29,7 @@ public:
    // Friend functions
    friend std::ostream& operator<<(std::ostream& output, const MatrixRow& matrixRow);
    friend MatrixRow operator+(const MatrixRow& left, const MatrixRow& right);
+   friend MatrixRow operator-(const MatrixRow& left, const MatrixRow& right);
 
 private:
    std::vector<int> mRowData;
@@ -43,6 +47,8 @@ class Matrix
 public:
    explicit Matrix(Dimension d);
    ~Matrix() = default;
+   Matrix(const Matrix&) = default;
+   Matrix& operator=(const Matrix&) = default;
    Matrix(Matrix&& other);  // VS2013 doesn't allow for implict move constructor, nor can it be defaulted. Must define.
    Matrix& operator=(Matrix&& other);  // VS2013 doesn't allow for implict move assignment, nor can it be defaulted. Must define.
    
@@ -56,6 +62,7 @@ public:
    // Friend functions
    friend std::ostream& operator<<(std::ostream& output, const Matrix& matrixRow);
    friend Matrix operator+(const Matrix& left, const Matrix& right);
+   friend Matrix operator-(const Matrix& left, const Matrix& right);
 
 private:
    Dimension mDimension;
@@ -65,6 +72,6 @@ private:
    void addRowAt(MatrixRow row, size_t index);
 
    Matrix() = delete;
-   Matrix(const Matrix&) = delete;
-   Matrix& operator=(const Matrix&) = delete;
 };
+
+void assertMatchingMatrixDimensions(Dimension left, Dimension right);

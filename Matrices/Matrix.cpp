@@ -7,6 +7,20 @@
 
 
 //---------------------------------------------------------------------------------------------------------------------
+// Matrix Dimension
+//---------------------------------------------------------------------------------------------------------------------
+
+bool operator==(const Dimension& left, const Dimension& right)
+{
+   return (left.m == right.m) && (left.n == right.n);
+}
+
+bool operator!=(const Dimension& left, const Dimension& right)
+{
+   return !(left == right);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
 // Matrix Row
 //---------------------------------------------------------------------------------------------------------------------
 
@@ -143,10 +157,7 @@ std::ostream& operator<<(std::ostream& output, const Matrix& matrix)
 
 Matrix operator+(const Matrix& left, const Matrix& right)
 {
-   if ((left.mDimension.m != right.mDimension.m) && (left.mDimension.n != right.mDimension.n))
-   {
-      throw std::exception{ "uh oh!" };
-   }
+   assertMatchingMatrixDimensions(left.mDimension, right.mDimension);
 
    Matrix result{left.mDimension};
 
@@ -156,4 +167,22 @@ Matrix operator+(const Matrix& left, const Matrix& right)
    }
 
    return result;
+}
+
+Matrix operator-(const Matrix& left, const Matrix& right)
+{
+   assertMatchingMatrixDimensions(left.mDimension, right.mDimension);
+
+   Matrix negativeRight = right;
+   negativeRight.negate();
+
+   return Matrix{ left + negativeRight };
+}
+
+void assertMatchingMatrixDimensions(Dimension left, Dimension right)
+{
+   if (left != right)
+   {
+      throw std::exception{ "uh oh!" };
+   }
 }

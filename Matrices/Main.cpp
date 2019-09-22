@@ -23,6 +23,9 @@ int main()
    c.negate();
    std::cout << "The negative of matrix C is:\n" << c << std::endl;
 
+   Matrix d = a - b;
+   std::cout << "The subtraction of matrices A and B results in matrix D:\n" << d << std::endl;
+
    std::string name;
    getline(std::cin, name);
    std::cout << "Hello, " << name << "!\n";
