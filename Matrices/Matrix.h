@@ -18,6 +18,7 @@ public:
 
    // Modifiers
    bool fillRow(std::vector<int> row);
+   void negate();
    
    // Other member functions
    // none so far
@@ -47,6 +48,7 @@ public:
    
    // Modifiers
    void addRow(std::vector<int> row);
+   void negate();
 
    // Other member functions
    // none so far

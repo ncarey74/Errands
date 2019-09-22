@@ -28,6 +28,14 @@ bool MatrixRow::fillRow(std::vector<int> row)
    return false;
 }
 
+void MatrixRow::negate()
+{
+   for (auto& i : mRowData)
+   {
+      i = -i;
+   }
+}
+
 std::ostream& operator<<(std::ostream& output, const MatrixRow& matrixRow)
 {
    output << "[";
@@ -111,6 +119,14 @@ void Matrix::addRow(std::vector<int> row)
 void Matrix::addRowAt(MatrixRow row, size_t index)
 {
    mData.at(index) = row;
+}
+
+void Matrix::negate()
+{
+   for (auto& i : mData)
+   {
+      i.negate();
+   }
 }
 
 std::ostream& operator<<(std::ostream& output, const Matrix& matrix)
