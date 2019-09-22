@@ -20,6 +20,14 @@ bool operator!=(const Dimension& left, const Dimension& right)
    return !(left == right);
 }
 
+void assertMatchingMatrixDimensions(Dimension left, Dimension right)
+{
+   if (left != right)
+   {
+      throw std::exception{ "uh oh!" };
+   }
+}
+
 //---------------------------------------------------------------------------------------------------------------------
 // Matrix Row
 //---------------------------------------------------------------------------------------------------------------------
@@ -62,15 +70,37 @@ std::ostream& operator<<(std::ostream& output, const MatrixRow& matrixRow)
    return output;
 }
 
+/**
+ * @note Assume operation is only performed inside Matrix class, which enforces dimensions
+ */
 MatrixRow operator+(const MatrixRow& left, const MatrixRow& right)
 {
-   // Assume operation is only performed inside Matrix class, which enforces dimensions
    std::vector<int> summation{};
 
    std::transform(std::begin(left.mRowData), std::end(left.mRowData), std::begin(right.mRowData), std::back_inserter(summation), std::plus<int>());
    
    MatrixRow result{ left.mRowData.size() };
    result.fillRow(summation);
+
+   return result;
+}
+
+/**
+* @note Assume operation is only performed inside Matrix class, which enforces dimensions
+*/
+MatrixRow operator*(int scalar, const MatrixRow& row)
+{
+   // Why can't I do std::vector<int> scalarValues{ row.mRowData.size(), scalar }; ???
+   std::vector<int> scalarValues{};
+   scalarValues.resize(row.mRowData.size());
+   std::fill(std::begin(scalarValues), std::end(scalarValues), scalar);
+
+   std::vector<int> scalarMultiplication{};
+
+   std::transform(std::begin(row.mRowData), std::end(row.mRowData), std::begin(scalarValues), std::back_inserter(scalarMultiplication), std::multiplies<int>());
+
+   MatrixRow result{ row.mRowData.size() };
+   result.fillRow(scalarMultiplication);
 
    return result;
 }
@@ -161,7 +191,7 @@ Matrix operator+(const Matrix& left, const Matrix& right)
 
    Matrix result{left.mDimension};
 
-   for (size_t i = 0; i < left.mDimension.m; i++)
+   for (size_t i = 0; i < result.mDimension.m; i++)
    {
       result.addRowAt(left.mData.at(i) + right.mData.at(i), i);
    }
@@ -179,10 +209,14 @@ Matrix operator-(const Matrix& left, const Matrix& right)
    return Matrix{ left + negativeRight };
 }
 
-void assertMatchingMatrixDimensions(Dimension left, Dimension right)
+Matrix operator*(int scalar, const Matrix& matrix)
 {
-   if (left != right)
+   Matrix result{ matrix.mDimension };
+   
+   for (size_t i = 0; i < result.mDimension.m; i++)
    {
-      throw std::exception{ "uh oh!" };
+      result.addRowAt(scalar * matrix.mData.at(i), i);
    }
+
+   return result;
 }

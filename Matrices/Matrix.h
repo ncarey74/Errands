@@ -11,6 +11,8 @@ struct Dimension
 bool operator==(const Dimension& left, const Dimension& right);
 bool operator!=(const Dimension& left, const Dimension& right);
 
+void assertMatchingMatrixDimensions(Dimension left, Dimension right);
+
 class MatrixRow
 {
 public:
@@ -30,6 +32,7 @@ public:
    friend std::ostream& operator<<(std::ostream& output, const MatrixRow& matrixRow);
    friend MatrixRow operator+(const MatrixRow& left, const MatrixRow& right);
    friend MatrixRow operator-(const MatrixRow& left, const MatrixRow& right);
+   friend MatrixRow operator*(int scalar, const MatrixRow& matrix);
 
 private:
    std::vector<int> mRowData;
@@ -63,6 +66,7 @@ public:
    friend std::ostream& operator<<(std::ostream& output, const Matrix& matrixRow);
    friend Matrix operator+(const Matrix& left, const Matrix& right);
    friend Matrix operator-(const Matrix& left, const Matrix& right);
+   friend Matrix operator*(int scalar, const Matrix& matrix);
 
 private:
    Dimension mDimension;
@@ -73,5 +77,3 @@ private:
 
    Matrix() = delete;
 };
-
-void assertMatchingMatrixDimensions(Dimension left, Dimension right);

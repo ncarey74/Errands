@@ -26,6 +26,9 @@ int main()
    Matrix d = a - b;
    std::cout << "The subtraction of matrices A and B results in matrix D:\n" << d << std::endl;
 
+   Matrix e = 2 * a;
+   std::cout << "Scalar multiplication of 2 and matrix A:\n" << e << std::endl;
+
    std::string name;
    getline(std::cin, name);
    std::cout << "Hello, " << name << "!\n";
