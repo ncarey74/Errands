@@ -17,6 +17,9 @@ int main()
    b.addRow(std::vector<int>{40, 50, 60});
    std::cout << b << std::endl;
 
+   Matrix c = a + b;
+   std::cout << c << std::endl;
+
    std::string name;
    getline(std::cin, name);
    std::cout << "Hello, " << name << "!\n";

@@ -44,7 +44,6 @@ MatrixRow operator+(const MatrixRow& left, const MatrixRow& right)
 {
    // Assume operation is only performed inside Matrix class, which enforces dimensions
    std::vector<int> summation{};
-   summation.resize(left.mRowData.size());
 
    std::transform(std::begin(left.mRowData), std::end(left.mRowData), std::begin(right.mRowData), std::back_inserter(summation), std::plus<int>());
    
@@ -66,6 +65,25 @@ Matrix::Matrix(Dimension d) : mDimension(d), mData()
       mData.push_back(MatrixRow{ mDimension.n });
    }
    mData.shrink_to_fit();
+}
+
+Matrix::Matrix(Matrix&& other) : mDimension(other.mDimension), mData(other.mData)
+{
+   other.mDimension = Dimension{0, 0};
+   other.mData.clear();
+}
+
+Matrix& Matrix::operator=(Matrix&& other)
+{
+   if (this != &other)
+   {
+      mDimension = other.mDimension;
+      mData = other.mData;
+
+      other.mDimension = Dimension{ 0, 0 };
+      other.mData.clear();
+   }
+   return *this;
 }
 
 void Matrix::addRow(std::vector<int> row)
@@ -90,16 +108,16 @@ void Matrix::addRow(std::vector<int> row)
    }
 }
 
-void addRow(MatrixRow row)
+void Matrix::addRowAt(MatrixRow row, size_t index)
 {
-   // how?
+   mData.at(index) = row;
 }
 
-std::ostream& operator<<(std::ostream& output, const Matrix& matrixRow)
+std::ostream& operator<<(std::ostream& output, const Matrix& matrix)
 {
-   output << "The matrix is " << matrixRow.mDimension.m << "x" << matrixRow.mDimension.n << std::endl;
+   output << "The matrix is " << matrix.mDimension.m << "x" << matrix.mDimension.n << std::endl;
 
-   for (const auto& i : matrixRow.mData)
+   for (const auto& i : matrix.mData)
    {
       output << i;
    }
@@ -118,6 +136,8 @@ Matrix operator+(const Matrix& left, const Matrix& right)
 
    for (size_t i = 0; i < left.mDimension.m; i++)
    {
-      result.addRow(left.mData.at(i) + right.mData.at(i));
+      result.addRowAt(left.mData.at(i) + right.mData.at(i), i);
    }
+
+   return result;
 }

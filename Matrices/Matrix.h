@@ -11,7 +11,7 @@ struct Dimension
 class MatrixRow
 {
 public:
-   MatrixRow(size_t length);
+   explicit MatrixRow(size_t length);
    ~MatrixRow() = default;
    MatrixRow(const MatrixRow&) = default;
    MatrixRow& operator=(const MatrixRow&) = default;
@@ -40,12 +40,13 @@ private:
 class Matrix
 {
 public:
-   Matrix(Dimension d);
+   explicit Matrix(Dimension d);
    ~Matrix() = default;
+   Matrix(Matrix&& other);  // VS2013 doesn't allow for implict move constructor, nor can it be defaulted. Must define.
+   Matrix& operator=(Matrix&& other);  // VS2013 doesn't allow for implict move assignment, nor can it be defaulted. Must define.
    
    // Modifiers
    void addRow(std::vector<int> row);
-   void addRow(MatrixRow row);
 
    // Other member functions
    // none so far
@@ -57,6 +58,9 @@ public:
 private:
    Dimension mDimension;
    std::vector<MatrixRow> mData;
+
+   // Modifiers
+   void addRowAt(MatrixRow row, size_t index);
 
    Matrix() = delete;
    Matrix(const Matrix&) = delete;
