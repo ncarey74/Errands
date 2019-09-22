@@ -12,6 +12,7 @@ class MatrixRow
 {
 public:
    MatrixRow(size_t length);
+   ~MatrixRow() = default;
    MatrixRow(const MatrixRow&) = default;
    MatrixRow& operator=(const MatrixRow&) = default;
 
@@ -19,7 +20,11 @@ public:
    bool fillRow(std::vector<int> row);
    
    // Other member functions
-   void print() const;
+   // none so far
+
+   // Friend functions
+   friend std::ostream& operator<<(std::ostream& output, const MatrixRow& matrixRow);
+   friend MatrixRow operator+(const MatrixRow& left, const MatrixRow& right);
 
 private:
    std::vector<int> mRowData;
@@ -40,9 +45,14 @@ public:
    
    // Modifiers
    void addRow(std::vector<int> row);
+   void addRow(MatrixRow row);
 
    // Other member functions
-   void print() const;
+   // none so far
+
+   // Friend functions
+   friend std::ostream& operator<<(std::ostream& output, const Matrix& matrixRow);
+   friend Matrix operator+(const Matrix& left, const Matrix& right);
 
 private:
    Dimension mDimension;
